@@ -9,7 +9,6 @@ public class Fire : MonoBehaviour
 	public Transform posGenerate;
 	//[SerializeField] private Joystick joysticToView;
 	[SerializeField] private PlayerController playerController;
-	[SerializeField] private Canvas canvas;
 
 	public float fireSpeed;
 	float curFireSpeed = 0;
@@ -25,14 +24,14 @@ public class Fire : MonoBehaviour
 	{
 		if (!playerController.PlayerManager.IsOwner) return;
 
+		curFireSpeed -= Time.deltaTime;
 		if (Input.GetKey(KeyCode.Space))
 		{
-			curFireSpeed -= Time.deltaTime;
 			if (curFireSpeed <= 0)
 			{
 				Bullet bullet = Instantiate(fireObj, posGenerate.position, Quaternion.identity).GetComponent<Bullet>();
 
-				Vector3 dir = new Vector3(playerController.transform.position.x - canvas.renderingDisplaySize.x / canvas.scaleFactor, playerController.transform.position.y - canvas.renderingDisplaySize.y / canvas.scaleFactor, 0);
+				Vector3 dir = playerController.vectorOfView;
 				bullet.speed = dir.normalized * bulletSpeed;
 
 				curFireSpeed = fireSpeed;

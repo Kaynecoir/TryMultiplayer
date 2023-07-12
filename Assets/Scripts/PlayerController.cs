@@ -6,14 +6,17 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private PlayerManager playerManager;
-    private GameObject player;
+    private Transform playerObj;
 	public PlayerManager PlayerManager => playerManager;
     public Canvas canvas;
+    public Vector3 vectorOfView;
+    public float degreesOfView;
 
 	void Start()
     {
         playerManager = GetComponent<PlayerManager>();
-        player = playerManager.playerObj;
+        playerObj = playerManager.playerObj;
+        canvas = playerManager.canvas;
     }
 
     void FixedUpdate()
@@ -28,19 +31,27 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey(KeyCode.D)) dirMove += Vector3.right;
         else if (Input.GetKey(KeyCode.A)) dirMove += Vector3.left;
 
-        transform.position += dirMove * playerManager.playerSpeed;
+        dirMove *= playerManager.playerSpeed;
+        dirMove += playerManager.player.position;
+        //Debug.Log(dirMove);
 
 
         //rotation
-        Vector3 dirView = (Input.mousePosition - (Vector3)canvas.renderingDisplaySize / 2) / 108 - player.transform.position;
+        vectorOfView = (Input.mousePosition - (Vector3)canvas.renderingDisplaySize / 2) / 108 - transform.position;
+        vectorOfView.Normalize();
+        float angle_rad = Mathf.Atan2(vectorOfView.y, vectorOfView.x);
+        degreesOfView = angle_rad / Mathf.PI * 180;
 
-        float angle_rad = Mathf.Atan2(dirView.y, dirView.x);
-        float angle_del = angle_rad / Mathf.PI * 180;
-        player.transform.rotation = Quaternion.Euler(0, 0, angle_del);
-
-
-        //another
-        if (Input.GetKey(KeyCode.Q)) playerManager.networkVariable.Value = Random.Range(0, 20);
-
-    }
+		transform.position = dirMove;
+		playerObj.transform.rotation = Quaternion.Euler(0, 0, degreesOfView);
+		//playerManager.PositionServerRpc(dirMove, degreesOfView);
+		//another
+		//playerManager.networkPositionVariable.Value = new PlayerManager.PlayerPosition
+		//{
+		//    x = dirMove.x,
+		//    y = dirMove.y,
+		//    z = dirMove.z,
+		//    degZ = degreesOfView,
+		//};
+	}
 }
