@@ -264,7 +264,7 @@ MonoBehaviour:
   canvas: {fileID: 4468770369776115191, guid: 3471334806a272f4381622dab3d90536, type: 3}
   player: {fileID: 2961762238923113483}
   playerObj: {fileID: 2961762237822936555}
-  playerSpeed: 0.2
+  playerSpeed: 5
   coinCount: 0
 --- !u!114 &9068171269586217502
 MonoBehaviour:

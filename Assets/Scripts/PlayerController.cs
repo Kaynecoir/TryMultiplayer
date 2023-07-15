@@ -6,7 +6,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private PlayerManager playerManager;
-    private Transform player;
+    private Transform playerObj;
 	public PlayerManager PlayerManager => playerManager;
     public Canvas canvas;
 
@@ -15,10 +15,10 @@ public class PlayerController : MonoBehaviour
     {
         playerManager = GetComponent<PlayerManager>();
         canvas = playerManager.canvas;
-        player = playerManager.player;
+        playerObj = playerManager.playerObj;
     }
 
-    void FixedUpdate()
+    void Update()
     {
         
         if (!playerManager.IsOwner) return;
@@ -30,19 +30,21 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey(KeyCode.D)) dirMove += Vector3.right;
         else if (Input.GetKey(KeyCode.A)) dirMove += Vector3.left;
 
-        transform.position += dirMove * playerManager.playerSpeed;
+        dirMove *= playerManager.playerSpeed * Time.deltaTime;
+        dirMove += transform.position;  
 
 
         //rotation
-        Vector3 dirView = (Input.mousePosition - (Vector3)canvas.renderingDisplaySize / 2) / 108 - player.transform.position;
+        Vector3 dirView = (Input.mousePosition - (Vector3)canvas.renderingDisplaySize / 2) / 108 - playerObj.transform.position;
 
         float angle_rad = Mathf.Atan2(dirView.y, dirView.x);
         float angle_del = angle_rad / Mathf.PI * 180;
-        player.transform.rotation = Quaternion.Euler(0, 0, angle_del);
+        //player.transform.rotation = Quaternion.Euler(0, 0, angle_del);
 
 
         //another
-        if (Input.GetKey(KeyCode.Q)) playerManager.networkVariable.Value = new PlayerManager.positionStruct { x = Random.Range(0, 10) };
+        playerManager.networkVariable.Value = new PlayerManager.positionStruct { x = dirMove.x, y = dirMove.y, deg = angle_del };
+
         // if (Input.GetKey(KeyCode.Q)) playerManager.networkVariable.Value = new PlayerManager.positionStruct { x = player.position.x, y = player.position.y };
         // playerManager.networkVariable.Value = new PlayerManager.positionStruct { x = player.position.x, y = player.position.y };
 
