@@ -5,20 +5,33 @@ using Unity.Netcode;
 
 public class PlayerManager : NetworkBehaviour
 {
-    public NetworkVariable<int> networkVariable = new NetworkVariable<int>(1, 
-        NetworkVariableReadPermission.Everyone, 
-        NetworkVariableWritePermission.Owner);
+
+	public NetworkVariable<positionStruct> networkVariable = new NetworkVariable<positionStruct>(new positionStruct { x = 0 },
+		NetworkVariableReadPermission.Everyone,
+		NetworkVariableWritePermission.Owner);
+
+	public struct positionStruct
+	{
+		public float x;
+	}
+
+	public Canvas canvas;
+    public Transform player;
+    public Transform playerObj;
 
     public float playerSpeed;
-    public GameObject playerObj;
     public int coinCount;
     public override void OnNetworkSpawn()
     {
-        networkVariable.OnValueChanged += (int prevVal, int newVal) =>
+        networkVariable.OnValueChanged += (positionStruct preVal, positionStruct newVal) =>
         {
-            Debug.Log(OwnerClientId + ": value = " + networkVariable.Value);
-
+            Debug.Log(OwnerClientId + " = { x: " + newVal.x + " }");
         };
+        //networkVariable.OnValueChanged += (positionStruct prevVal, positionStruct newVal) =>
+        //{
+        //    Debug.Log(OwnerClientId + ": value {x: " + networkVariable.Value.x + ", y: " + networkVariable.Value.y + "}");
+
+        //};
 
     }
 }

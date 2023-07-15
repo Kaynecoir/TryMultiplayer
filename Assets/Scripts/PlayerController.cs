@@ -6,14 +6,16 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private PlayerManager playerManager;
-    private GameObject player;
+    private Transform player;
 	public PlayerManager PlayerManager => playerManager;
     public Canvas canvas;
 
-	void Start()
+
+    void Start()
     {
         playerManager = GetComponent<PlayerManager>();
-        player = playerManager.playerObj;
+        canvas = playerManager.canvas;
+        player = playerManager.player;
     }
 
     void FixedUpdate()
@@ -40,7 +42,9 @@ public class PlayerController : MonoBehaviour
 
 
         //another
-        if (Input.GetKey(KeyCode.Q)) playerManager.networkVariable.Value = Random.Range(0, 20);
+        if (Input.GetKey(KeyCode.Q)) playerManager.networkVariable.Value = new PlayerManager.positionStruct { x = Random.Range(0, 10) };
+        // if (Input.GetKey(KeyCode.Q)) playerManager.networkVariable.Value = new PlayerManager.positionStruct { x = player.position.x, y = player.position.y };
+        // playerManager.networkVariable.Value = new PlayerManager.positionStruct { x = player.position.x, y = player.position.y };
 
     }
 }
