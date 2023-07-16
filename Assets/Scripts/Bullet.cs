@@ -10,6 +10,8 @@ public class Bullet : NetworkBehaviour
 	public CollisionDamage collisionDamage;
 	private void Start()
 	{
+		SpawnServerRpc();
+
 		collisionDamage = GetComponent<CollisionDamage>();
 		collisionDamage.DamageObject += MeDestroy;
 	}
@@ -27,9 +29,15 @@ public class Bullet : NetworkBehaviour
 	}
 
 	[ServerRpc]
+	private void SpawnServerRpc()
+	{
+		if (!IsOwner) return;
+		GetComponent<NetworkObject>().Spawn(true);
+	}
+	[ServerRpc]
 	private void DespawnServerRpc()
 	{
 		if (!IsOwner) return;
-		GetComponent<NetworkObject>().Despawn();
+		GetComponent<NetworkObject>().Despawn(true);
 	}
 }

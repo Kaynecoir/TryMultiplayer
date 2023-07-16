@@ -33,7 +33,7 @@ public class Fire : MonoBehaviour
 			{
 				Debug.Log("Fire");
 				Bullet bullet = Instantiate(fireObj, posGenerate.position, Quaternion.identity).GetComponent<Bullet>();
-				bullet = FireBulletServerRpc(bullet);
+				//bullet = FireBulletServerRpc(bullet);
 
 				Vector3 dir = (Input.mousePosition - (Vector3)canvas.renderingDisplaySize / 2) / 108 - playerController.playerObj.transform.position;
 				bullet.speed = dir.normalized * bulletSpeed;
