@@ -29,6 +29,7 @@ public class Bullet : NetworkBehaviour
 	[ServerRpc]
 	private void DespawnServerRpc()
 	{
+		if (!IsOwner) return;
 		GetComponent<NetworkObject>().Despawn();
 	}
 }
