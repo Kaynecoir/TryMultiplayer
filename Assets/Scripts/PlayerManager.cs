@@ -34,14 +34,8 @@ public class PlayerManager : NetworkBehaviour
     {
         networkVariable.OnValueChanged += (positionStruct preVal, positionStruct newVal) =>
         {
-            Debug.Log(OwnerClientId + " = { x: " + newVal.x + ", y: " + newVal.y + " }");
+            //Debug.Log(OwnerClientId + " = { x: " + newVal.x + ", y: " + newVal.y + " }");
         };
-        //networkVariable.OnValueChanged += (positionStruct prevVal, positionStruct newVal) =>
-        //{
-        //    Debug.Log(OwnerClientId + ": value {x: " + networkVariable.Value.x + ", y: " + networkVariable.Value.y + "}");
-
-        //};
-
     }
 
 	private void Update()

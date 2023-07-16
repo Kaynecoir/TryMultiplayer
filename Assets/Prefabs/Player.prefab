@@ -209,6 +209,7 @@ GameObject:
   - component: {fileID: 2993263495205797824}
   - component: {fileID: 9068171269586217502}
   - component: {fileID: 7550949254431293952}
+  - component: {fileID: 4732759481968107351}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -306,6 +307,24 @@ MonoBehaviour:
   ScaleThreshold: 0.01
   InLocalSpace: 0
   Interpolate: 1
+--- !u!114 &4732759481968107351
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2961762238923113486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a85a9236e2b2f944838ce6bd6640937, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fireObj: {fileID: 9200123602461573427, guid: 5782576d3d8e943459a71e4048b529a5, type: 3}
+  posGenerate: {fileID: 3226021120747665583}
+  playerController: {fileID: 9068171269586217502}
+  canvas: {fileID: 1470855578219074064}
+  fireSpeed: 1
+  bulletSpeed: 10
 --- !u!1001 &3057317027920056295
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -403,6 +422,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3471334806a272f4381622dab3d90536, type: 3}
+--- !u!223 &1470855578219074064 stripped
+Canvas:
+  m_CorrespondingSourceObject: {fileID: 4468770369776115191, guid: 3471334806a272f4381622dab3d90536, type: 3}
+  m_PrefabInstance: {fileID: 3057317027920056295}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &1470855578219074065 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4468770369776115190, guid: 3471334806a272f4381622dab3d90536, type: 3}

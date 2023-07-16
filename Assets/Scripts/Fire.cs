@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerController))]
@@ -21,18 +22,20 @@ public class Fire : MonoBehaviour
 		//joysticToView = playerController.joysticToView;
 	}
 
-	private void FixedUpdate()
+	private void Update()
 	{
 		if (!playerController.PlayerManager.IsOwner) return;
-
+		//if ()
+		curFireSpeed -= Time.deltaTime;
 		if (Input.GetKey(KeyCode.Space))
 		{
-			curFireSpeed -= Time.deltaTime;
 			if (curFireSpeed <= 0)
 			{
+				Debug.Log("Fire");
 				Bullet bullet = Instantiate(fireObj, posGenerate.position, Quaternion.identity).GetComponent<Bullet>();
+				bullet = FireBulletServerRpc(bullet);
 
-				Vector3 dir = new Vector3(playerController.transform.position.x - canvas.renderingDisplaySize.x / canvas.scaleFactor, playerController.transform.position.y - canvas.renderingDisplaySize.y / canvas.scaleFactor, 0);
+				Vector3 dir = (Input.mousePosition - (Vector3)canvas.renderingDisplaySize / 2) / 108 - playerController.playerObj.transform.position;
 				bullet.speed = dir.normalized * bulletSpeed;
 
 				curFireSpeed = fireSpeed;
@@ -51,5 +54,14 @@ public class Fire : MonoBehaviour
 		//	}
 		//}
 		//else curFireSpeed = 0;
+	}
+
+	[ServerRpc]
+	private Bullet FireBulletServerRpc(Bullet bullet)
+	{
+
+		bullet.GetComponent<NetworkObject>().Spawn();
+
+		return bullet;
 	}
 }

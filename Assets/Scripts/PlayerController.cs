@@ -6,7 +6,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private PlayerManager playerManager;
-    private Transform playerObj;
+    public Transform playerObj;
 	public PlayerManager PlayerManager => playerManager;
     public Canvas canvas;
 
