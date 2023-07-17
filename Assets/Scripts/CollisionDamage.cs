@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(CircleCollider2D))]
 public class CollisionDamage : MonoBehaviour
 {
 	public float damage;
@@ -12,6 +13,7 @@ public class CollisionDamage : MonoBehaviour
 	private void Start()
 	{
 		DamageObject += Damage;
+		//DamageObject += (GameObject go) => { Debug.Log(go.GetComponent<Health>().CurrentHealth); };
 	}
 
 	public void Damage(GameObject go)

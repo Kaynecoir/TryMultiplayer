@@ -17,6 +17,7 @@ public class Bullet : NetworkBehaviour
 
 		collisionDamage = GetComponent<CollisionDamage>();
 		collisionDamage.DamageObject += MeDestroy;
+		//collisionDamage.DamageObject += (GameObject go) => { Debug.Log("Damage player"); };
 	}
 	private void Update()
 	{
