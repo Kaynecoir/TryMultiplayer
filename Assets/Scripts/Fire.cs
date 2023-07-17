@@ -4,7 +4,7 @@ using Unity.Netcode;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerController))]
-public class Fire : MonoBehaviour
+public class Fire : NetworkBehaviour
 {
 	public GameObject fireObj;
 	public Transform posGenerate;
@@ -25,18 +25,13 @@ public class Fire : MonoBehaviour
 	private void Update()
 	{
 		if (!playerController.PlayerManager.IsOwner) return;
-		//if ()
 		curFireSpeed -= Time.deltaTime;
 		if (Input.GetKey(KeyCode.Space))
 		{
 			if (curFireSpeed <= 0)
 			{
 				Debug.Log("Fire");
-				Bullet bullet = Instantiate(fireObj, posGenerate.position, Quaternion.identity).GetComponent<Bullet>();
-				//bullet = FireBulletServerRpc(bullet);
-
-				Vector3 dir = (Input.mousePosition - (Vector3)canvas.renderingDisplaySize / 2) / 108 - playerController.playerObj.transform.position;
-				bullet.speed = dir.normalized * bulletSpeed;
+				FireBulletServerRpc(playerController.PlayerManager.networkVariable.Value.deg);
 
 				curFireSpeed = fireSpeed;
 			}
@@ -57,11 +52,14 @@ public class Fire : MonoBehaviour
 	}
 
 	[ServerRpc]
-	private Bullet FireBulletServerRpc(Bullet bullet)
+	private void FireBulletServerRpc(float deg)
 	{
+		GameObject go = Instantiate(fireObj, posGenerate.position, Quaternion.identity);
+		Bullet bullet = go.GetComponent<Bullet>();
 
-		bullet.GetComponent<NetworkObject>().Spawn();
+		go.GetComponent<NetworkObject>().Spawn();
 
-		return bullet;
+		Vector3 dir = new Vector3(Mathf.Cos(deg / 180 * Mathf.PI), Mathf.Sin(deg / 180 * Mathf.PI));
+		bullet.speed = dir.normalized * bulletSpeed;
 	}
 }
